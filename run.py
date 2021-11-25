@@ -40,7 +40,7 @@ def seed(value: int) -> None:
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
-    argparser.add_argument("mode", choices=("train", "eval"))
+    argparser.add_argument("mode", choices=("train", "eval","predict"))
     argparser.add_argument("experiment")
     argparser.add_argument("--config-file", default="config.toml")
     argparser.add_argument("--data-split", choices=("train", "dev", "test"),
@@ -66,15 +66,12 @@ if __name__ == "__main__":
                                 " files in evaluation modes. Ignored in"
                                 " 'train' mode.")
     args = argparser.parse_args()
-
     if args.warm_start and args.weights is not None:
         print("The following options are incompatible:"
               " '--warm_start' and '--weights'", file=sys.stderr)
         sys.exit(1)
-
     seed(2020)
     model = CorefModel(args.config_file, args.experiment)
-
     if args.batch_size:
         model.config.a_scoring_batch_size = args.batch_size
 
@@ -84,6 +81,11 @@ if __name__ == "__main__":
                                noexception=args.warm_start)
         with output_running_time():
             model.train()
+    if args.mode == "predict":
+        model.load_weights(path=args.weights, map_location="cpu",
+                           ignore={"bert_optimizer", "general_optimizer",
+                                   "bert_scheduler", "general_scheduler"})
+        model.predict()
     else:
         model.load_weights(path=args.weights, map_location="cpu",
                            ignore={"bert_optimizer", "general_optimizer",
