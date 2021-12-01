@@ -82,12 +82,7 @@ class CorefModel:  # pylint: disable=too-many-instance-attributes
         self._set_training(new_value)
 
     # ========================================================== Public methods
-    def predict(self):
-        sent_ids = None
-        text = ["We","ca","n't","say","how","those","who","will","be","voting","on","Samuel","Alito","'s","nomination","to","Supreme","Court","feel","about","him","/.","but","we","can","say","something","about","how","you","feel","tonight","/.","Here","are","the","results","of","the","CNN","USA","Today","Gallup","poll","released","just","minutes","ago","of","those","asked","about","the","president","'s","choice","Judge","Alito","to","succeed","Justice","Sandra","Day","O'Connor","/.","Seventeen","percent","said","he","'s","an","excellent","choice","/.","twenty","-","six","percent","called","him","a","good","choice","/.","twenty","-","two","percent","rated","him","only","fair","/.","seventeen","percent","thought","he","was","a","poor","choice","/.","Questions","about","the","facts","or","what","were","presented","as","facts","that","led","the","United","States","into","the","war","in","Iraq","spilled","into","open","warfare","today","on","the","Senate","floor","/.","Democrats","forced","the","Senate","into","a","rare","closed","door","session","/.","Republican","leader","Bill","Frist","said","the","Senate","was","hijacked","/.","CNN","'s","Ed","Henry","was","there","/.","A","Democratic","sneak","attack","that","sent","shock","waves","through","the","Senate","/.","Mr.","President","enough","time","has","gone","by","/.","I","demand","on","behalf","of","the","American","people","that","we","understand","why","these","investigations","are","n't","being","conducted","/.","Democratic","leader","Harry","Reed","accused","Republicans","of","failing","to","probe","allegations","the","White","House","manipulated","intelligence","to","justify","the","war","in","Iraq","/.","And","in","accordance","with","rule","twenty","-","one","I","now","move","that","Senate","go","into","closed","session","/.","President","I","second","the","motion","/.","An","easy","but","rare","maneuver","with","extraordinary","consequences","/.","The","Senate","chamber","was","locked","down",",","television","cameras","shut","off",",","so","law","makers","could","go","into","secret","session","to","debate","/.","Republican","leader","Bill","Frist","was","enraged","/.","Not","with","the","previous","Democratic","leader","or","the","current","Democratic","leader","have","ever","I","been","slapped","in","the","face","with","such","an","affront","to","the","leadership","of","this","grand","institution","/.","There","has","been","at","least","consideration","for","the","other","side","of","the","aisle","before","a","stunt","/.","and","this","is","a","pure","stunt","/.","Reed","refused","to","back","down","demanding","the","Republican","led","intelligence","committee","finish","a","long","awaited","report","on","whether","the","Bush","administration","twisted","intelligence","/.","This","investigation","has","been","stymied","stopped",",","obstructions","thrown","up","every","step","of","the","way","/.","That","'s","the","real","slap","in","the","face","/.","that","'s","the","slap","in","the","face","/.","And","today","the","American","people","are","going","to","see","a","little","bit","of","light","/.","What","'s","really","going","on","is","Democrats","feel","emboldened","by","the","indictment","of","Vice","President","Cheney","'s","former","chief","of","staff","believing","this","is","their","chance","to","issue","a","broader","indictment","of","the","Bush","administration","/.","We","have","lost","over","two","thousand","of","our","best","and","bravest","/.","over","fifteen","thousand","have","been","seriously","wounded","/.","We","are","spending","more","than","six","million","dollars","a","month","with","no","end","in","sight","/.","and","this","Republican","led","Senate","intelligence","committee","refuses","to","even","ask","the","hard","questions","about","the","misinformation","/-","Republicans","insist","they","'re","completing","the","investigation","/.","and","this","is","just","a","distraction","/.","This","is","purely","political","/.","This","is","settling","an","old","political","score","/.","Democrats","say","they","also","want","to","signal","they","'re","ready","to","stand","up","to","the","Republican","majority","and","may","even","filibuster","the","president","'s","latest","Supreme","Court","pick","Samuel","Alito","a","move","that","would","make","these","events","seem","like","the","opening","fireworks","in","a","much","nastier","battle","/.","Ed","Henry","CNN","Capitol","Hill","/.","So","do","you","think","we","just","saw","the","outlines","to","what","the","midterm","election","battlelines","might","look","like","/?","A","debate","that","'s","likely","to","rage","on","for","many","many","months","to","come","/."]
-        sent_ids = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,9,10,10,10,10,10,10,10,11,11,11,11,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,16,16,16,16,16,16,17,17,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,19,19,19,19,19,19,19,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,22,22,22,22,22,22,22,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,25,25,25,25,25,25,25,25,25,26,26,26,26,26,26,26,26,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,29,29,29,29,29,29,29,29,29,29,29,29,30,30,30,30,30,30,30,30,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,33,33,33,33,33,33,33,33,34,34,34,34,34,34,34,35,35,35,35,35,36,36,36,36,36,36,36,36,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,38,38,38,38,38,38,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40]
-
-        doc = doc_from_text(text, sent_ids)
+    def predict(self, doc):
         doc = self._tokenize_docs_talisman(doc)
         prediction = self.run(doc)
         for cluster in prediction.span_clusters:
@@ -95,7 +90,7 @@ class CorefModel:  # pylint: disable=too-many-instance-attributes
             for span in cluster:
                 word = []
                 for i in range(span[0],span[1]):
-                   word.append(text[i])
+                   word.append(doc["cased_words"][i])
                 cluster_word.append(word)
             print(cluster_word)
         print("\nresult", prediction.word_clusters,"\n\n", prediction.span_clusters)
@@ -540,8 +535,6 @@ class CorefModel:  # pylint: disable=too-many-instance-attributes
         filter_func = TOKENIZER_FILTERS.get(self.config.bert_model,
                                         lambda _: True)
         token_map = TOKENIZER_MAPS.get(self.config.bert_model, {})
-        doc["span_clusters"] = [[tuple(mention) for mention in cluster]
-                           for cluster in doc["span_clusters"]]
         word2subword = []
         subwords = []
         word_id = []
@@ -560,36 +553,6 @@ class CorefModel:  # pylint: disable=too-many-instance-attributes
         doc["word2subword"] = word2subword
         doc["subwords"] = subwords
         doc["word_id"] = word_id
-        head_clusters = [
-                        [get_head(mention, doc) for mention in cluster]
-                        for cluster in doc["clusters"]
-                    ]
-
-        # check for duplicates
-        head2spans = defaultdict(list)
-        for cluster, head_cluster in zip(doc["clusters"], head_clusters):
-            for span, span_head in zip(cluster, head_cluster):
-                head2spans[span_head].append((span, head_cluster))
-
+        doc["word_clusters"] = []
         doc["head2span"] = []
-
-        for head, spans in head2spans.items():
-            spans.sort(key=lambda x: x[0][1] - x[0][0])  # shortest spans first
-            doc["head2span"].append((head, *spans[0][0]))
-
-            if len(spans) > 1:
-                for span, cluster in spans:
-                    logging.debug(f'{id(cluster)} {" ".join(doc["cased_words"][slice(*span)])}')
-                logging.debug("=====")
-
-                for _, cluster in spans[1:]:
-                    cluster.remove(head)
-
-
-
-        filtered_head_clusters = [cluster for cluster in head_clusters if len(cluster) > 1]
-
-        doc["word_clusters"] = filtered_head_clusters
-        doc["span_clusters"] = doc["clusters"]
-
         return doc
