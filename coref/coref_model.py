@@ -92,8 +92,7 @@ class CorefModel:  # pylint: disable=too-many-instance-attributes
                 for i in range(span[0],span[1]):
                    word.append(doc["cased_words"][i])
                 cluster_word.append(word)
-            print(cluster_word)
-        print("\nresult", prediction.word_clusters,"\n\n", prediction.span_clusters)
+        return prediction
 
     @torch.no_grad()
     def evaluate(self,
