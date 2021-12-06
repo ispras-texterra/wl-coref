@@ -85,13 +85,6 @@ class CorefModel:  # pylint: disable=too-many-instance-attributes
     def predict(self, doc):
         doc = self._tokenize_docs_talisman(doc)
         prediction = self.run(doc)
-        for cluster in prediction.span_clusters:
-            cluster_word = []
-            for span in cluster:
-                word = []
-                for i in range(span[0],span[1]):
-                   word.append(doc["cased_words"][i])
-                cluster_word.append(word)
         return prediction
 
     @torch.no_grad()
