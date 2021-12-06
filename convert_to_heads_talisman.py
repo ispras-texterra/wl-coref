@@ -35,7 +35,7 @@ def get_head(mention: Tuple[int, int], doc: dict) -> int:
     return end - 1
 
 
-def doc_from_text(text,sents_id=None,part_id=0,document_id="bc/cctv/00/cctv_0000"):
+def doc_from_text(text, sents_id, part_id=0, document_id="bc/cctv/00/cctv_0000"):
     # 'pos', 'deprel', 'head', 'head2span', 'word_clusters', 'span_clusters', 'word2subword', 'subwords', 'word_id']
     doc = {
             "document_id":      document_id,
@@ -43,25 +43,19 @@ def doc_from_text(text,sents_id=None,part_id=0,document_id="bc/cctv/00/cctv_0000
             "sent_id":          [],
             "part_id":          part_id,
             "speaker":          [],
-            "clusters":        list(),
-            "subwords":         list(),
-            "span_clusters": list(),
+            "clusters":         [],
+            "subwords":         [],
+            "span_clusters":    [],
             "head":             []
         }
 
-    i = 0
-    j = 0
-    for word in text:
+    for word, sent_id in zip(text, sents_id):
         doc["cased_words"].append(word)
-        doc["sent_id"].append(j)
+        doc["sent_id"].append(sent_id)
         doc["speaker"].append(0)
         doc["subwords"].append(word)
         doc["head"].append(None)
-        if "." in word:
-            j+=1
-        i+=1
-    if sents_id:
-        doc["sent_id"] = sents_id
+
 
     return doc
 
