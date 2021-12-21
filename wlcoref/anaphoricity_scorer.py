@@ -4,7 +4,7 @@ mentions produces their anaphoricity scores.
 import torch
 
 from wlcoref import utils
-from coref.config import Config
+from wlcoref.config import Config
 
 
 class AnaphoricityScorer(torch.nn.Module):
