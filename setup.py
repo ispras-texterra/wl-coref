@@ -13,8 +13,9 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url='https://github.com/ispras-texterra/wl-coref',
-    author='ISPRAS MODIS NLP team',
-    author_email='modis@ispras.ru',
+    author='V. Dobrovolskii',
+    author_email='',
+    # original project repository: https://github.com/vdobrovolskii/wl-coref
     maintainer='Sasha Pivovarov',
     maintainer_email='pivovarov.av@ispras.ru',
     packages=find_packages(include=['coref']),
