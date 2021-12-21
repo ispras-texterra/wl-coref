@@ -4,7 +4,7 @@ from typing import List, Set
 
 import torch
 
-from coref.const import EPSILON
+from wlcoref.const import EPSILON
 
 
 class GraphNode:

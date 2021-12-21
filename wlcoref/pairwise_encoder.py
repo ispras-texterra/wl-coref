@@ -5,8 +5,8 @@ from typing import List
 
 import torch
 
-from coref.config import Config
-from coref.const import Doc
+from wlcoref.config import Config
+from wlcoref.const import Doc
 
 
 class PairwiseEncoder(torch.nn.Module):

@@ -3,7 +3,7 @@ mentions produces their anaphoricity scores.
 """
 import torch
 
-from coref import utils
+from wlcoref import utils
 from coref.config import Config
 
 

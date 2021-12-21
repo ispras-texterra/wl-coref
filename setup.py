@@ -18,7 +18,7 @@ setup(
     # original project repository: https://github.com/vdobrovolskii/wl-coref
     maintainer='Sasha Pivovarov',
     maintainer_email='pivovarov.av@ispras.ru',
-    packages=find_packages(include=['coref']),
+    packages=find_packages(include=['wlcoref']),
     install_requires=['jsonlines', 'toml', 'transformers==3.2.0', 'torch==1.4.0', 'torchvision==0.5.0'],
     data_files=[('', ['VERSION'])],
     python_requires='>=3.6',

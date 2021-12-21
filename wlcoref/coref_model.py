@@ -14,19 +14,19 @@ import torch
 from tqdm import tqdm   # type: ignore
 import transformers     # type: ignore
 
-from coref import bert, conll, utils
-from coref.anaphoricity_scorer import AnaphoricityScorer
-from coref.cluster_checker import ClusterChecker
-from coref.config import Config
-from coref.const import CorefResult, Doc
-from coref.loss import CorefLoss
-from coref.pairwise_encoder import PairwiseEncoder
-from coref.rough_scorer import RoughScorer
-from coref.span_predictor import SpanPredictor
-from coref.tokenizer_customization import TOKENIZER_FILTERS, TOKENIZER_MAPS
-from coref.utils import GraphNode
-from coref.word_encoder import WordEncoder
-from convert_to_heads_talisman import *
+from wlcoref import bert, conll, utils
+from wlcoref.anaphoricity_scorer import AnaphoricityScorer
+from wlcoref.cluster_checker import ClusterChecker
+from wlcoref.config import Config
+from wlcoref.const import CorefResult, Doc
+from wlcoref.loss import CorefLoss
+from wlcoref.pairwise_encoder import PairwiseEncoder
+from wlcoref.rough_scorer import RoughScorer
+from wlcoref.span_predictor import SpanPredictor
+from wlcoref.tokenizer_customization import TOKENIZER_FILTERS, TOKENIZER_MAPS
+from wlcoref.utils import GraphNode
+from wlcoref.word_encoder import WordEncoder
+
 
 class CorefModel:  # pylint: disable=too-many-instance-attributes
     """Combines all coref modules together to find coreferent spans.

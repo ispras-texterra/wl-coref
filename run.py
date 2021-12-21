@@ -13,7 +13,7 @@ from convert_to_heads_talisman import *
 import numpy as np  # type: ignore
 import torch        # type: ignore
 
-from coref import CorefModel
+from wlcoref import CorefModel
 
 
 @contextmanager
