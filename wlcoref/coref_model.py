@@ -69,6 +69,7 @@ class CorefModel:  # pylint: disable=too-many-instance-attributes
         self._set_training(False)
         self._coref_criterion = CorefLoss(self.config.bce_loss_weight)
         self._span_criterion = torch.nn.CrossEntropyLoss(reduction="sum")
+        self.load_weights(self.config.saved_weights, noexception=True)
 
     @property
     def training(self) -> bool:

@@ -14,6 +14,7 @@ class Config:  # pylint: disable=too-many-instance-attributes, too-few-public-me
 
     data_dir: str
 
+    saved_weights: str
     train_data: str
     dev_data: str
     test_data: str
