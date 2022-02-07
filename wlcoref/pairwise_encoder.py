@@ -4,7 +4,6 @@ distance between the mentions, same/different speaker into feature embeddings
 from typing import List
 
 import torch
-
 from wlcoref.config import Config
 from wlcoref.const import Doc
 

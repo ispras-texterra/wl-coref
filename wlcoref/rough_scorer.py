@@ -5,7 +5,6 @@ anaphoricity scores.
 from typing import Tuple
 
 import torch
-
 from wlcoref.config import Config
 
 

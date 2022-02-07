@@ -2,7 +2,6 @@
 mentions produces their anaphoricity scores.
 """
 import torch
-
 from wlcoref import utils
 from wlcoref.config import Config
 

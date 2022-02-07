@@ -4,7 +4,6 @@ from typing import List, Tuple
 
 import numpy as np                                 # type: ignore
 from transformers import AutoModel, AutoTokenizer  # type: ignore
-
 from wlcoref.config import Config
 from wlcoref.const import Doc
 

@@ -1,9 +1,8 @@
 """ Contains functions to produce conll-formatted output files with
 predicted spans and their clustering """
-
+import os
 from collections import defaultdict
 from contextlib import contextmanager
-import os
 from typing import List, TextIO
 
 from wlcoref.config import Config

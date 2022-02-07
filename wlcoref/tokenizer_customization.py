@@ -14,5 +14,5 @@ TOKENIZER_FILTERS = {
 # Maps some words to tokens directly, without a tokenizer
 TOKENIZER_MAPS = {
     "roberta-large": {".": ["."], ",": [","], "!": ["!"], "?": ["?"],
-                      ":":[":"], ";":[";"], "'s": ["'s"]}
+                      ":": [":"], ";": [";"], "'s": ["'s"]}
 }

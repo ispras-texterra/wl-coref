@@ -3,7 +3,6 @@
 from typing import List, Set
 
 import torch
-
 from wlcoref.const import EPSILON
 
 

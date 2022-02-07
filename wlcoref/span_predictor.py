@@ -4,8 +4,8 @@ head word and context embeddings.
 
 from typing import List, Optional, Tuple
 
-from wlcoref.const import Doc, Span
 import torch
+from wlcoref.const import Doc, Span
 
 
 class SpanPredictor(torch.nn.Module):
@@ -24,7 +24,7 @@ class SpanPredictor(torch.nn.Module):
             torch.nn.Conv1d(64, 4, 3, 1, 1),
             torch.nn.Conv1d(4, 2, 3, 1, 1)
         )
-        self.emb = torch.nn.Embedding(128, distance_emb_size) # [-63, 63] + too_far
+        self.emb = torch.nn.Embedding(128, distance_emb_size)  # [-63, 63] + too_far
 
     @property
     def device(self) -> torch.device:
@@ -79,8 +79,8 @@ class SpanPredictor(torch.nn.Module):
         padded_pairs = torch.zeros(*padding_mask.shape, pair_matrix.shape[-1], device=words.device)
         padded_pairs[padding_mask] = pair_matrix
 
-        res = self.ffnn(padded_pairs) # [n_heads, n_candidates, last_layer_output]
-        res = self.conv(res.permute(0, 2, 1)).permute(0, 2, 1) # [n_heads, n_candidates, 2]
+        res = self.ffnn(padded_pairs)  # [n_heads, n_candidates, last_layer_output]
+        res = self.conv(res.permute(0, 2, 1)).permute(0, 2, 1)  # [n_heads, n_candidates, 2]
 
         scores = torch.full((heads_ids.shape[0], words.shape[0], 2), float('-inf'), device=words.device)
         scores[rows, cols] = res[padding_mask]

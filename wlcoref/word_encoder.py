@@ -4,7 +4,6 @@
 from typing import Tuple
 
 import torch
-
 from wlcoref.config import Config
 from wlcoref.const import Doc
 
