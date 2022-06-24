@@ -16,3 +16,7 @@ env.bak/
 venv.bak/
 
 .idea/
+/ontonotes-release-5.0/
+/downloads/
+/data/
+/reference-coreference-scorers/

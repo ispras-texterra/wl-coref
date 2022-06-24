@@ -51,7 +51,8 @@ class CorefModel:  # pylint: disable=too-many-instance-attributes
     def __init__(self,
                  config_path: str,
                  section: str,
-                 epochs_trained: int = 0):
+                 epochs_trained: int = 0,
+                 ndocs: Optional[int] = None):
         """
         A newly created model is set to evaluation mode.
 
@@ -60,16 +61,18 @@ class CorefModel:  # pylint: disable=too-many-instance-attributes
             section (str): the selected section of the config file
             epochs_trained (int): the number of epochs finished
                 (useful for warm start)
+            ndocs (Optional[int]): external number of documents for scheduler setup if training from Talisman
         """
         self.config = CorefModel._load_config(config_path, section)
         self.epochs_trained = epochs_trained
         self._docs: Dict[str, List[Doc]] = {}
         self._build_model()
-        self._build_optimizers()
+        self._build_optimizers(ndocs)
         self._set_training(False)
         self._coref_criterion = CorefLoss(self.config.bce_loss_weight)
         self._span_criterion = torch.nn.CrossEntropyLoss(reduction="sum")
-        self.load_weights(self.config.saved_weights, noexception=True)
+        if self.config.saved_weights:
+            self.load_weights(self.config.saved_weights, noexception=True)
 
     @property
     def training(self) -> bool:
@@ -91,13 +94,15 @@ class CorefModel:  # pylint: disable=too-many-instance-attributes
     @torch.no_grad()
     def evaluate(self,
                  data_split: str = "dev",
-                 word_level_conll: bool = False
+                 word_level_conll: bool = False,
+                 dev_docs=None
                  ) -> Tuple[float, Tuple[float, float, float]]:
         """ Evaluates the modes on the data split provided.
 
         Args:
             data_split (str): one of 'dev'/'test'/'train'
             word_level_conll (bool): if True, outputs conll files on word-level
+            dev_docs (dict): provide a preloaded set of development docs for evaluation (added for integration with talisman trainer)
 
         Returns:
             mean loss
@@ -106,7 +111,10 @@ class CorefModel:  # pylint: disable=too-many-instance-attributes
         self.training = False
         w_checker = ClusterChecker()
         s_checker = ClusterChecker()
-        docs = self._get_docs(self.config.__dict__[f"{data_split}_data"])
+        if not dev_docs:
+            docs = self._get_docs(self.config.__dict__[f"{data_split}_data"])
+        else:
+            docs = [self._tokenize_docs_talisman(doc) for doc in dev_docs]
         running_loss = 0.0
         s_correct = 0
         s_total = 0
@@ -260,7 +268,7 @@ class CorefModel:  # pylint: disable=too-many-instance-attributes
 
         return res
 
-    def save_weights(self):
+    def save_weights(self, data_dir_override: str = None) -> str:
         """ Saves trainable models as state dicts. """
         to_save: List[Tuple[str, Any]] = \
             [(key, value) for key, value in self.trainable.items()
@@ -269,18 +277,28 @@ class CorefModel:  # pylint: disable=too-many-instance-attributes
         to_save.extend(self.schedulers.items())
 
         time = datetime.strftime(datetime.now(), "%Y.%m.%d_%H.%M")
-        path = os.path.join(self.config.data_dir,
-                            f"{self.config.section}"
-                            f"_(e{self.epochs_trained}_{time}).pt")
+        if not data_dir_override:
+            path = os.path.join(self.config.data_dir,
+                                f"{self.config.section}"
+                                f"_(e{self.epochs_trained}_{time}).pt")
+        else:
+            path = os.path.join(data_dir_override,
+                                f"{self.config.section}"
+                                f"_(e{self.epochs_trained}_{time}).pt")
         savedict = {name: module.state_dict() for name, module in to_save}
         savedict["epochs_trained"] = self.epochs_trained  # type: ignore
         torch.save(savedict, path)
+        return path
 
-    def train(self):
+    def train(self, train_docs=None, dev_docs=None, datadir=None):
         """
         Trains all the trainable blocks in the model using the config provided.
+        The parameters are only required when training from Talisman.
         """
-        docs = list(self._get_docs(self.config.train_data))
+        if not train_docs:
+            docs = list(self._get_docs(self.config.train_data))
+        else:
+            docs = [self._tokenize_docs_talisman(doc) for doc in train_docs]
         docs_ids = list(range(len(docs)))
         avg_spans = sum(len(doc["head2span"]) for doc in docs) / len(docs)
 
@@ -326,8 +344,9 @@ class CorefModel:  # pylint: disable=too-many-instance-attributes
                 )
 
             self.epochs_trained += 1
-            self.save_weights()
-            self.evaluate()
+            self.save_weights(datadir)
+
+            self.evaluate(dev_docs=dev_docs)
 
     # ========================================================= Private methods
 
@@ -375,8 +394,9 @@ class CorefModel:  # pylint: disable=too-many-instance-attributes
             "sp": self.sp
         }
 
-    def _build_optimizers(self):
-        n_docs = len(self._get_docs(self.config.train_data))
+    def _build_optimizers(self, n_docs: Optional[int]):
+        if not n_docs:
+            n_docs = len(self._get_docs(self.config.train_data))
         self.optimizers: Dict[str, torch.optim.Optimizer] = {}
         self.schedulers: Dict[str, torch.optim.lr_scheduler.LambdaLR] = {}
 

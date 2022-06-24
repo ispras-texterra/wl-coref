@@ -4,7 +4,7 @@ For description of all config values, refer to config.toml.
 """
 
 from dataclasses import dataclass
-from typing import Dict
+from typing import Dict, Optional
 
 
 @dataclass
@@ -14,7 +14,6 @@ class Config:  # pylint: disable=too-many-instance-attributes, too-few-public-me
 
     data_dir: str
 
-    saved_weights: str
     train_data: str
     dev_data: str
     test_data: str
@@ -43,3 +42,4 @@ class Config:  # pylint: disable=too-many-instance-attributes, too-few-public-me
 
     tokenizer_kwargs: Dict[str, dict]
     conll_log_dir: str
+    saved_weights: Optional[str] = None
